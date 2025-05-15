@@ -1,0 +1,24 @@
+[
+    {
+        "columnName": "To Do",
+        "tasks": [
+            {
+                "title": "Implement user authentication",
+                "tags": ["Feature", "High Priority"]
+            },
+            {
+                "title": "Fix navigation bug",
+                "tags": ["Bug"]
+            }
+        ]
+    },
+    {
+        "columnName": "In Progress",
+        "tasks": [
+            {
+                "title": "Design system updates",
+                "tags": ["Design"]
+            }
+        ]
+    }
+]
