@@ -1,38 +1,62 @@
+```md
+# ✅ Playwright Tech Evaluation – Data-Driven Task Validation Suite
 
-# Playwright Tech Evaluation – Task Validation Suite
+This is a Playwright-based end-to-end test suite written in TypeScript. It validates that tasks in an Asana-style demo app appear in the correct columns and have the correct tags — using a fully **data-driven approach**.
 
-This project is a Playwright-based end-to-end test suite written in TypeScript. It validates task visibility and tagging in a demo Asana-style application using a **data-driven approach**, powered by external JSON files.
+---
 
-## Objective
+## 🎯 Objective
 
-- Automate login to the demo application.
-- Validate that tasks appear in the correct columns (e.g., "To Do", "In Progress", "Done").
-- Verify that each task has the correct tags.
-- Use **external JSON** to drive all test data (no hardcoding).
-- Minimize code duplication using a reusable test function.
+- ✅ Automate login to the app using provided credentials.
+- ✅ Navigate to project sections ("Web Application" / "Mobile Application").
+- ✅ Validate tasks under correct columns with expected tags.
+- ✅ Use JSON to drive **all** test data and configuration.
+- ✅ Refactor logic into a **single scalable test** to minimize duplication.
 
-## Tech Stack
+---
 
-- [Playwright](https://playwright.dev/)
-- TypeScript
-- Node.js
+## 🧠 Thought Process
 
-## Project Structure
+- I refactored the original tests into a **single reusable test** that dynamically runs validations for both Web and Mobile tasks.
+- I separated:
+  - **Test logic** into a single `taskValidation.spec.ts` file
+  - **Environment config** (like credentials and URL) into `projectConfig.json`
+  - **Test data** (project names, task columns, tags, and UI confirmation text) into `taskData.json`
+- I created a `types.ts` file for type safety, making the test easier to maintain and less error-prone.
+
+> ✅ This meets the requirement of being completely **data-driven** and scalable as more projects/tasks are added.
+
+---
+
+## 🔧 Tech Stack
+
+- [Playwright](https://playwright.dev/) – end-to-end test framework
+- TypeScript – for strong typing and maintainability
+- JSON – for fully externalized test data and config
+
+---
+
+## 📁 Project Structure
 
 ```
 
-/data
-├── websiteTasks.json
-└── mobileTasks.json      # Contains test case data
-/tests
-└── taskValidation.spec.ts # Main test suite
-playwright.config.ts
-tsconfig.json
-package.json
+LoopQATechEval/
+├── data/
+│   ├── projectConfig.json       # login credentials and URL
+│   └── taskData.json            # project, column, task, and tag data
+├── tests/
+│   └── taskValidation.spec.ts   # main test suite
+├── types.ts                     # interface definitions for type safety
+├── package.json
+└── playwright.config.ts
 
 ````
 
-## Test Scenarios Covered
+---
+
+## 🧪 Test Scenarios Covered
+
+All data below is driven from `taskData.json`.
 
 | App Section         | Column      | Task                      | Tags                    |
 |---------------------|-------------|---------------------------|-------------------------|
@@ -43,43 +67,34 @@ package.json
 | Mobile Application  | In Progress | Offline mode              | Feature, High Priority  |
 | Mobile Application  | Done        | App icon design           | Design                  |
 
-## Thought Process
+---
 
-- I separated test logic from test data using external JSON files to improve scalability and reduce duplication.
-- A shared helper function (`validateTasksInColumns`) dynamically verifies task title and tag visibility based on the input JSON.
-- I used TypeScript interfaces to enforce data structure, enabling autocomplete and early error detection.
-- The login flow is abstracted into `beforeEach()` to keep tests clean and focused.
+## 🔐 Login Credentials Used
 
-## How to Run
+These are stored in `data/projectConfig.json`:
 
-### 1. Install dependencies
-
-npm install
-
-### 2. Run tests
-
-npx playwright test
-
-
-### 3. (Optional) View test report
-
-npx playwright show-report
-
-## Login Info Used
-
-* **URL**: [https://animated-gingersnap-8cf7f2.netlify.app](https://animated-gingersnap-8cf7f2.netlify.app)
-* **Username**: `admin`
-* **Password**: `password123`
-
-## Notes
-
-* All selectors are scoped to avoid cross-task interference.
-* Tests rely on visual headings and roles for accurate targeting.
-* No code duplication — all scenarios are driven by data.
-
-## Submission
-
-This project was built for a technical evaluation to demonstrate test automation, code quality, and scalable architecture using Playwright.
+```json
+{
+  "url": "https://animated-gingersnap-8cf7f2.netlify.app/",
+  "username": "admin",
+  "password": "password123"
+}
+```
 
 ---
+
+## 📌 Summary
+
+This solution is:
+
+* ✅ Fully data-driven using JSON
+* ✅ Refactored into a single test for scalability
+* ✅ Free of hardcoded UI or config values
+* ✅ Maintains clarity, separation of concerns, and type safety
+
+---
+
+Thanks for reviewing my submission!
+
+```
 
