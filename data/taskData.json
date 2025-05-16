@@ -1,0 +1,58 @@
+[
+  {
+    "project": "Web Application",
+    "confirmText": "Main web application development",
+    "tasks": [
+      {
+        "column": "To Do",
+        "title": "Implement user authentication",
+        "tags": [
+          "Feature",
+          "High Priority"
+        ]
+      },
+      {
+        "column": "To Do",
+        "title": "Fix navigation bug",
+        "tags": [
+          "Bug"
+        ]
+      },
+      {
+        "column": "In Progress",
+        "title": "Design system updates",
+        "tags": [
+          "Design"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "Mobile Application",
+    "confirmText": "Native mobile app development",
+    "tasks": [
+      {
+        "column": "To Do",
+        "title": "Push notification system",
+        "tags": [
+          "Feature"
+        ]
+      },
+      {
+        "column": "In Progress",
+        "title": "Offline mode",
+        "tags": [
+          "Feature",
+          "High Priority"
+        ]
+      },
+      {
+        "column": "Done",
+        "title": "App icon design",
+        "tags": [
+          "Design"
+        ]
+      }
+    ]
+  }
+]
