@@ -1,31 +1,19 @@
 import { test, expect, type Page } from '@playwright/test';
-import mobileTasks from '../data/mobileTasks.json';
-import websiteTasks from '../data/websiteTasks.json';
+import type { Task, ProjectData, ProjectConfig } from '../data/types';
+import rawTaskData from '../data/taskData.json';
+import rawProjectConfig from '../data/projectConfig.json';
 
-// Define constants for app URL and login credentials
-const URL = 'https://animated-gingersnap-8cf7f2.netlify.app/'
-const username = 'admin';
-const password = 'password123';
-
-// Define TypeScript interfaces to describe the structure of task data
-interface Task {
-  title: string;
-  tags: string[];
-}
-
-interface Columns {
-  columnName: string;
-  tasks: Task[];
-}
+const projectConfig = rawProjectConfig as ProjectConfig;
+const projects = rawTaskData as ProjectData[];
 
 // Reusable login flow that runs before each test
 test.beforeEach(async ({ page }) => {
   // Navigate to the login page
-  await page.goto(URL);
+  await page.goto(projectConfig.url);
 
   // Fill in the login form using provided credentials
-  await page.locator('#username').fill(username);
-  await page.locator('#password').fill(password);
+  await page.locator('#username').fill(projectConfig.username);
+  await page.locator('#password').fill(projectConfig.password);
 
   // Submit the form by clicking the "Sign in" button
   await page.getByRole('button', { name: 'Sign in' }).click();
@@ -34,43 +22,33 @@ test.beforeEach(async ({ page }) => {
 });
 
 // Reusable function that validates tasks and tags in the specified columns
-async function validateTasksInColumns(page: Page, columns: Columns[]) {
-  for (const group of columns) {
-    const columnName = group.columnName;
+async function validateTasks(page: Page, project: ProjectData) {
+  // Navigate to the project tab if needed
+  await page.getByRole('button', { name: project.project }).click();
 
+  // Wait for a confirmation element from JSON to ensure the section loaded
+  await expect(page.locator('.text-gray-500', { hasText: project.confirmText})).toBeVisible();
+
+  //await expect(page.getByText(project.confirmText)).toBeVisible();
+
+  for (const task of project.tasks) {
     // Locate the column container by its heading (e.g., "To Do", "In Progress")
-    const columnLocator = page.locator(`h2:has-text("${columnName}")`).locator('..');
+    const column = page.locator(`h2:has-text("${task.column}")`).locator('..');
 
-    for (const task of group.tasks) {
-      const { title, tags } = task;
-      // Verify the task title is visible in the correct column
-      await expect(columnLocator.getByText(title)).toBeVisible();
+    // Verify the task title is visible in the correct column
+    await expect(column.getByText(task.title)).toBeVisible();
 
-      // Locate the specific task card using the task title inside an <h3> element
-      const taskCard = columnLocator.locator(`.bg-white:has(h3:has-text("${title}"))`);
-
-      // Verify all expected tags are visible within that task card
-      for (const tag of tags) {
-        await expect(taskCard.getByText(tag, { exact: true })).toBeVisible();
-      }
+    // Locate the specific task card using the task title inside an <h3> element
+    const taskCard = column.locator(`.bg-white:has(h3:has-text("${task.title}"))`);
+    for (const tag of task.tags) {
+      // Validate expected tags are displayed on the task card
+      await expect(taskCard.getByText(tag, { exact: true })).toBeVisible();
     }
   }
 }
 
-// Test: Validate Web Application tasks using websiteTasks.json
-test('Website tasks appear under correct columns with correct tags', async ({ page }) => {
-  await validateTasksInColumns(page, websiteTasks);
+test('All tasks appear in correct columns with correct tags', async ({ page }) => {
+  for (const project of projects) {
+    await validateTasks(page, project);
+  }
 });
-
-// Test: Validate Mobile Application tasks using mobileTasks.json
-test('Mobile tasks appear under correct columns with correct tags', async ({ page }) => {
-  // Switch to the "Mobile Application" section by clicking its tab
-  await page.getByRole('button', { name: 'Mobile Application' }).click();
-
-  // Confirm that the correct section content has loaded
-  await expect(page.locator('.text-gray-500', { hasText: 'Native mobile app development' })).toBeVisible();
-
-  // Run the same task validation logic using the mobile-specific task data
-  await validateTasksInColumns(page, mobileTasks);
-});
-
