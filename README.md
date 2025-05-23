@@ -36,24 +36,6 @@ This is a Playwright-based end-to-end test suite written in TypeScript. It valid
 
 ---
 
-## 📁 Project Structure
-
-```
-
-LoopQATechEval/
-├── data/
-│   ├── projectConfig.json       # login credentials and URL
-│   └── taskData.json            # project, column, task, and tag data
-├── tests/
-│   └── taskValidation.spec.ts   # main test suite
-├── types.ts                     # interface definitions for type safety
-├── package.json
-└── playwright.config.ts
-
-````
-
----
-
 ## 🧪 Test Scenarios Covered
 
 All data below is driven from `taskData.json`.
@@ -72,6 +54,7 @@ All data below is driven from `taskData.json`.
 ## 🔐 Login Credentials Used
 
 These are stored in `data/projectConfig.json`:
+This data would normally be stored in a .env or Github Secrets if using CI/CD
 
 ```json
 {
