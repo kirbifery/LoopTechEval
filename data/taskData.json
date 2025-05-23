@@ -1,7 +1,6 @@
 [
   {
     "project": "Web Application",
-    "confirmText": "Main web application development",
     "tasks": [
       {
         "column": "To Do",
@@ -29,7 +28,6 @@
   },
   {
     "project": "Mobile Application",
-    "confirmText": "Native mobile app development",
     "tasks": [
       {
         "column": "To Do",

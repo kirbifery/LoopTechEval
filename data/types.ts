@@ -8,7 +8,6 @@ export interface Task {
 // Represents a project section (Web or Mobile
 export interface ProjectData {
     project: string;
-    confirmText: string;
     tasks: Task[];
 }
 
