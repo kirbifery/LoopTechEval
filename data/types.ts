@@ -12,6 +12,7 @@ export interface ProjectData {
 }
 
 // Represents login and app-level configuration
+// This data would be stored in a .env or GitHub Secrets if using CI/CD
 export interface ProjectConfig {
     url: string;
     username: string;
