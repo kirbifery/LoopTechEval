@@ -26,20 +26,19 @@ async function validateTasks(page: Page, project: ProjectData) {
   // Navigate to the project tab if needed
   await page.getByRole('button', { name: project.project }).click();
 
-  // Wait for a confirmation element from JSON to ensure the section loaded
-  await expect(page.locator('.text-gray-500', { hasText: project.confirmText})).toBeVisible();
-
-  //await expect(page.getByText(project.confirmText)).toBeVisible();
+  // Confirm that the correct section content has loaded
+  await expect(page.locator('header')).toContainText(project.project)
 
   for (const task of project.tasks) {
-    // Locate the column container by its heading (e.g., "To Do", "In Progress")
-    const column = page.locator(`h2:has-text("${task.column}")`).locator('..');
+    // Locate the column container by its heading 
+    const column = page.locator('h2').filter({ hasText: task.column, }).locator('..');
 
-    // Verify the task title is visible in the correct column
+    // Verify the task title is in that column
     await expect(column.getByText(task.title)).toBeVisible();
 
-    // Locate the specific task card using the task title inside an <h3> element
-    const taskCard = column.locator(`.bg-white:has(h3:has-text("${task.title}"))`);
+    // Locate the task card using its heading (<h3>) and scope tag checks within that card
+    const taskCard = column.locator('h3').filter({hasText: task.title}).locator('..');
+
     for (const tag of task.tags) {
       // Validate expected tags are displayed on the task card
       await expect(taskCard.getByText(tag, { exact: true })).toBeVisible();
